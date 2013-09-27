@@ -36,7 +36,7 @@
 <ul>
   <?php
      foreach($documents as $document) {
-       echo '<li><a href="'. Routes::detail($document->id(), $document->slug(), $ctx->maybeRef()) .'">' . $document->slug() . '</a>';
+         echo '<li><a href="'. Routes::detail($document->id, $document->slug(), $ctx->maybeRef()) .'">' . $document->slug() . '</a>';
      };
   ?>
 </ul>

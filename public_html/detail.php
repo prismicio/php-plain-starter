@@ -29,7 +29,7 @@
 ?>
 
 <article id="@document.id">
-<?php /* echo $maybeDocument.asHtml(); */ ?>
+<?php echo $maybeDocument->asHtml(); ?>
 </article>
 
 <?php
