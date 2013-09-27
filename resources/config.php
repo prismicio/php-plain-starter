@@ -27,7 +27,7 @@ class Routes {
             $parameters['ref'] = $maybeRef;
         }
         $queryString = http_build_query($parameters);
-        return $protocol . $host . '/documents/' . $queryString;
+        return $protocol . $host . '/detail.php?' . $queryString;
     }
 
     public static function search($maybeRef) {

@@ -43,7 +43,9 @@ class API {
      * @return the master reference
      */
     public function master() {
-        $masters = array_filter($this->data->refs, function ($ref) { return $ref->isMasterRef == true; });
+        $masters = array_filter($this->data->refs, function ($ref) {
+            return $ref->isMasterRef == true;
+        });
         return $masters[0];
     }
 
@@ -131,26 +133,20 @@ class SearchForm {
         }
     }
 
-    function query($ref, $q = null) {
-        if (property_exists($ref, "ref")) {
-            $ref = $ref->ref;
+    function query($q) {
+        function strip($str) {
+            $trimmed = trim($str);
+            $drop1 = substr($trimmed, 1, strlen($trimmed));
+            $dropR1 = substr($drop1, 0, strlen($drop1) - 1);
+            return $dropR1;
         }
-        $queryParameters = array();
-        foreach($this->form->fields as $key=>$field) {
-            if (property_exists($field, "default")) {
-                $queryParameters[$key] = $field->default;
-            }
-        }
-        $queryParameters["ref"] = $ref;
-        if ($q) {
-            $queryParameters["q"] = $q;
-        }
-        $jsonDocList = json_decode(API::get($this->form->action . "?" . http_build_query($queryParameters)));
-        $documents = array();
-        foreach($jsonDocList as $jsonDoc) {
-            array_push($documents, new Document($jsonDoc));
-        }
-        return $documents;
+
+        $field = $this->form->fields->q;
+        $maybeDefault = property_exists($field, "default") ? $field->default : NULL;
+        $q1 = isset($maybeDefault) ? strip($maybeDefault) : "";
+        $data = $this->data;
+        $data['q'] = '[' . $q1 . strip($q) . ']';
+        return new SearchForm($this->api, $this->form, $data);
     }
 }
 
@@ -197,6 +193,13 @@ class Document {
         return $this->data->slugs[0];
     }
 
+    public function containsSlug($slug) {
+        $found = array_filter($this->data->slugs, function($s) {
+            return $s == $slug;
+        });
+        return count($found) > 0;
+    }
+
     public function tags() {
         return $this->data->tags;
     }
@@ -226,6 +229,12 @@ class Document {
         if (!array_key_exists($field, $this->fragments)) return null;
         $fragment = $this->fragments[$field];
         return $fragment->getImage($view);
+    }
+
+    public function asHtml() {
+        /* array_map(function($fragment) { */
+        /* '<section data-field="$field">${getHtml(field, linkResolver).getOrElse("")}</section>'; */
+        /* }, $this->fragments); */
     }
 }
 

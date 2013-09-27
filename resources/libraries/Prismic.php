@@ -69,6 +69,12 @@ class Prismic {
     public static function apiHome($maybeAccessToken) {
         return API::get(self::config('prismic.api'));
     }
+
+    public static function getDocument($id) {
+        $ctx = self::context();
+        $documents = $ctx->api->forms()->everything->query('[[:d = at(document.id, "'. $id .'")]]')->ref($ctx->ref)->submit();
+        return $documents[0];
+    }
 }
 
 ?>
