@@ -229,20 +229,20 @@ class Document {
                     }
                     if ($value->type === "Image") {
                         $data = $value->value;
-                        function asView ($json) {
+                        $asView = function($json) {
                             return new ImageView(
                                 $json->{ 'url' },
                                 $json->dimensions->width,
                                 $json->dimensions->height
                             );
-                        }
+                        };
 
                         $views = array();
                         foreach($value->value->views as $key => $jsonView) {
                             echo $key;
-                            $views[$key] = asView($jsonView);
+                            $views[$key] = $asView($jsonView);
                         }
-                        $mainView = asView($data->main, $views);
+                        $mainView = $asView($data->main, $views);
                         $fragment = new Image($mainView, $views);
                     }
                     if ($value->type === "StructuredText") {
@@ -443,7 +443,7 @@ class Date extends Fragment {
     }
 }
 
-class Embed($type, $provider, $url, $maybeWidth, $maybeHeight, $maybeHtml, $oembedJson) {
+class Embed {
 
     private $type;
     private $provider;
@@ -465,7 +465,7 @@ class Embed($type, $provider, $url, $maybeWidth, $maybeHeight, $maybeHtml, $oemb
 
     public function asHtml() {
         if(isset($this->maybeHtml)) {
-            '<div data-oembed="' . $this->url . '" data-oembed-type="$' . strtolower($this->type) . '" data-oembed-provider="' . strtolower($this->provider) . '">' . $this->html . '</div>'
+            '<div data-oembed="' . $this->url . '" data-oembed-type="$' . strtolower($this->type) . '" data-oembed-provider="' . strtolower($this->provider) . '">' . $this->html . '</div>';
         } else {
             return "";
         }
