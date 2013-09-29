@@ -1,7 +1,7 @@
 <?php
 
 require_once("../resources/config.php");
-require_once("../resources/libraries/vendors/prismicio.php");
+require_once("../resources/libraries/vendors/api.php");
 
 use prismic\API as API;
 
