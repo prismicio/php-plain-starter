@@ -1,23 +1,24 @@
 <?php
     require_once("../resources/config.php");
     require_once(LIBRARIES_PATH . "/Prismic.php");
-?>
 
-<?php
-    $id = isset($_GET['id']) ? $_GET['id'] : NULL;
-    $slug = isset($_GET['slug']) ? $_GET['slug'] : NULL;
-    $maybeRef = isset($_GET['ref']) ? $_GET['ref'] : NULL;
+    $id = isset($_GET['id']) ? $_GET['id'] : null;
+    $slug = isset($_GET['slug']) ? $_GET['slug'] : null;
+    $maybeRef = isset($_GET['ref']) ? $_GET['ref'] : null;
 
     if(!isset($id) || !isset($slug)) {
-        //BADREQUEST
+        header('HTTP/1.1 400 Bad Request', true, 400);
+        exit('Bad Request');
     }
 
     $maybeDocument = Prismic::getDocument($id);
     if(isset($maybeDocument)) {
         if($maybeDocument->slug() != $slug && $maybeDocument->containsSlug($slug)) {
-            //REDIRECTION
+            header('Location: ' + Routes::details($id, $maybeDocument->slug, $maybeRef));
+            exit('Moved Permanently');
         } else {
-            //NOTFOUND
+            header('HTTP/1.1 404 Not Found', true, 404);
+            exit('Not Found');
         }
     }
 
