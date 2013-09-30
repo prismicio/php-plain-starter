@@ -58,7 +58,7 @@ class API {
     public static function get($url) {
         $response = WS::get($url);
         if (!$response->data) {
-            throw new \Exception("HTTP Error: " . $http_status);
+            throw new \Exception("HTTP Error: " . $response->status);
         }
 
         $apiData = new ApiData(

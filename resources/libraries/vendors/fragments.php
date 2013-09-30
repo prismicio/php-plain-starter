@@ -162,14 +162,15 @@ class Embed implements Fragment {
         }
     }
 
-    public function parse($json) {
+    public static function parse($json) {
         return new Embed(
             $json->type,
-            $json->provider_name,
-            $json->embed_url,
-            $json->width,
-            $json->height,
-            $json->html
+            $json->oembed->provider_name,
+            $json->oembed->embed_url,
+            $json->oembed->width,
+            $json->oembed->height,
+            $json->oembed->html,
+            $json->oembed
         );
     }
 }
@@ -397,15 +398,6 @@ class StructuredText implements Fragment {
         }
     }
 
-    public function getTitle() {
-    }
-
-    public function getFirstParagraph() {
-    }
-
-    public function getFirstImage() {
-    }
-
     public static function parseSpan($json) {
         $type = $json->type;
         $start = $json->start;
@@ -485,8 +477,7 @@ class StructuredText implements Fragment {
         }
 
         if($json->type == 'embed') {
-            $view = Embed::parse($json);
-            return new Embed($view);
+            return Embed::parse($json);
         }
 
         return null;

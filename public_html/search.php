@@ -1,27 +1,18 @@
 <?php
     require_once("../resources/config.php");
     require_once(LIBRARIES_PATH . "/Prismic.php");
-    $title="All documents"
+    $title="Search results"
 ?>
 
 <?php
     $ctx = Prismic::context();
-    $documents = $ctx->api->forms()->everything->ref($ctx->ref)->submit();
+    $maybeQuery = isset($_POST['q']) ? $_POST['q'] : '';
+    $q = '[[:d = fulltext(document, "' . $maybeQuery . '")]]';
+    $documents = $ctx->api->forms()->everything->query($q)->ref($ctx->ref)->submit();
     $documentsSize = count($documents);
 ?>
 
-<?php
-    require_once(TEMPLATES_PATH . "/header.php");
-?>
-
-<form action="<?php echo Routes::search(); ?>" method="POST">
-  <input type="text" name="q" value="">
-  <input type="submit" value="Search">
-</form>
-
-<hr>
-
-<h2>
+<h1>
   <?php
      if($documentsSize == 0) {
          echo 'No documents found';
@@ -31,7 +22,7 @@
          echo $documentsSize . ' documents found';
      }
   ?>
-</h2>
+</h1>
 
 <ul>
   <?php
@@ -40,7 +31,3 @@
      };
   ?>
 </ul>
-
-<?php
-    require_once(TEMPLATES_PATH . "/footer.php");
-?>

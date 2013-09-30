@@ -11,7 +11,7 @@ class Context {
     private $ref;
     private $maybeAccessToken;
 
-    function __construct($api, $ref, $maybeAccessToken) {
+    function __construct($api, $ref, $maybeAccessToken=null, $linkResolver=null) {
         $this->api = $api;
         $this->ref = $ref;
         $this->maybeAccessToken = $maybeAccessToken;
@@ -66,7 +66,7 @@ class Prismic {
         return new Context($api, $ref, $maybeAccessToken);
     }
 
-    public static function apiHome($maybeAccessToken) {
+    public static function apiHome($maybeAccessToken = null) {
         return API::get(self::config('prismic.api'));
     }
 
