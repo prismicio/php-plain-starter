@@ -347,7 +347,7 @@ class StructuredText implements Fragment {
             while(!(empty($starts) && empty($endings))) {
                 $next = min($peekStart($starts), $peekEnd($endings));
                 if($next > $pos) {
-                    $result = $result . substr($text, 0, $next - $pos -1);
+                    $result = $result . substr($text, 0, $next - $pos);
                     $text = substr($text, $next - $pos);
                     $pos = $next;
                 } else {
@@ -361,11 +361,11 @@ class StructuredText implements Fragment {
                             array_push($endings, $start);
                             $spansToApply = $spansToApply . $getStartAndEnd($start, $linkResolver)[0];
                         }
-                        $result = $result . " " . $spansToApply;
                     }
+                    $result = $result . $spansToApply;
                 }
             }
-            return $result;
+            return $result . (strlen($text) > 0 ? $text : '');
         } else {
             return $text;
         }

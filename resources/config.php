@@ -2,7 +2,7 @@
 
 $CONFIG = array(
     "prismic" => array(
-        "api" => "https://lesbonneschoses-ui2p4lgij04c2yle.prismic.io/api",
+        "api" => "https://lesbonneschoses.prismic.io/api",
         "token" => "MC5Va1A0bWN1dnphQUNOQzZt.J--_ve-_vUxrJ--_ve-_vQBR77-9Me-_ve-_ve-_vTbvv73vv70seO-_vVYo77-9CmXvv73vv71677-9XO-_vQ",
         "clientId" => "UkP4mcuvzaACNC6l",
         "clientSecret" => "034d312c82301b153c3f16347e5cf1ae",
