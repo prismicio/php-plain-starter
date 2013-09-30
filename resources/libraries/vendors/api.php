@@ -43,9 +43,9 @@ class API {
         $forms = $this->data->forms;
         foreach($forms as $key => $form) {
             $f = new Form(
-                isset($form->name) ? $form->name : NULL,
+                isset($form->name) ? $form->name : null,
                 $form->method,
-                isset($form->rel) ? $form->rel : NULL,
+                isset($form->rel) ? $form->rel : null,
                 $form->enctype,
                 $form->action,
                 $form->fields
@@ -121,7 +121,7 @@ class SearchForm {
         }
 
         $field = $this->form->fields->q;
-        $maybeDefault = property_exists($field, "default") ? $field->default : NULL;
+        $maybeDefault = property_exists($field, "default") ? $field->default : null;
         $q1 = isset($maybeDefault) ? strip($maybeDefault) : "";
         $data = $this->data;
         $data['q'] = '[' . $q1 . strip($q) . ']';
@@ -185,10 +185,10 @@ class Document {
         return $fragment->getImage($view);
     }
 
-    public function asHtml() {
-        $html = NULL;
+    public function asHtml($linkResolver=null) {
+        $html = null;
         foreach($this->fragments as $field=>$v) {
-            $html = $html . '<section data-field="'. $field .'">'. $this->getHtml($field) .'</section>';
+            $html = $html . '<section data-field="'. $field .'">'. $this->getHtml($field, $linkResolver) .'</section>';
         };
         return $html;
     }

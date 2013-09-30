@@ -29,7 +29,10 @@
 ?>
 
 <article id="@document.id">
-<?php echo $maybeDocument->asHtml(); ?>
+<?php
+    global $linkResolver;
+    echo $maybeDocument->asHtml($linkResolver);
+?>
 </article>
 
 <?php
