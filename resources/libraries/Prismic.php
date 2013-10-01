@@ -25,8 +25,12 @@ class Context {
         }
     }
 
+    function hasPrivilegedAccess() {
+        return isset($this->maybeAccessToken);
+    }
+
     public function __get($property) {
-        if (property_exists($this, $property)) {
+        if(property_exists($this, $property)) {
             return $this->$property;
         }
     }
@@ -55,19 +59,24 @@ class Prismic {
         if(isset($value)) {
             return $value;
         } else {
-            throw new Exception("Missing configuration [" . $key . "]");
+            return null;
         }
     }
 
+    public static function callback() {
+        $maybeReferer = isset(getallheaders()['Referer']) ? getallheaders()['Referer'] : null;
+        return Routes::authCallback(null, isset($maybeReferer) ? $maybeReferer : Routes::index());
+    }
+
     public static function context() {
-        $maybeAccessToken = isset($_GET["ref"]) ? $_GET["ACCESS_TOKEN"] : self::config('prismic.token');
+        $maybeAccessToken = isset($_COOKIE["ACCESS_TOKEN"]) ? $_COOKIE["ACCESS_TOKEN"] : self::config('prismic.token');
         $api = self::apiHome($maybeAccessToken);
         $ref = isset($_GET["ref"]) ? $_GET["ref"] : $api->master()->ref;
         return new Context($api, $ref, $maybeAccessToken);
     }
 
     public static function apiHome($maybeAccessToken = null) {
-        return API::get(self::config('prismic.api'));
+        return API::get(self::config('prismic.api'), $maybeAccessToken);
     }
 
     public static function getDocument($id) {

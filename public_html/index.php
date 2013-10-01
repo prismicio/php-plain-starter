@@ -1,12 +1,21 @@
 <?php
     require_once("../resources/config.php");
     require_once(LIBRARIES_PATH . "/Prismic.php");
-    $title="All documents"
-?>
 
-<?php
-    $ctx = Prismic::context();
-    $documents = $ctx->api->forms()->everything->ref($ctx->ref)->submit();
+    try {
+        $ctx = Prismic::context();
+        $documents = $ctx->api->forms()->everything->ref($ctx->ref)->submit();
+    } catch (prismic\ForbiddenException $e) {
+        header('Location: ' . Routes::signin());
+        exit('Forbidden');
+    } catch (prismic\UnauthorizedException $e) {
+        header('Location: ' . Routes::index());
+        exit('Unauthorized');
+    }  catch(prismic\NotFoundException $e) {
+        exit("Not Found");
+    }
+
+    $title="All documents";
     $documentsSize = count($documents);
 ?>
 
@@ -14,7 +23,7 @@
     require_once(TEMPLATES_PATH . "/header.php");
 ?>
 
-<form action="<?php echo Routes::search(); ?>" method="POST">
+<form action="<?php echo Routes::search($ctx->ref); ?>" method="POST">
   <input type="text" name="q" value="">
   <input type="submit" value="Search">
 </form>

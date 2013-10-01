@@ -3,9 +3,9 @@
 $CONFIG = array(
     "prismic" => array(
         "api" => "http://lesbonneschoses.wroom.dev/api",
-        "token" => "MC5Va1A0bWN1dnphQUNOQzZt.J--_ve-_vUxrJ--_ve-_vQBR77-9Me-_ve-_ve-_vTbvv73vv70seO-_vVYo77-9CmXvv73vv71677-9XO-_vQ",
-        "clientId" => "UkP4mcuvzaACNC6l",
-        "clientSecret" => "034d312c82301b153c3f16347e5cf1ae",
+        "token" => null,
+        "clientId" => "UknxpTLCasABLxN4",
+        "clientSecret" => "2800c6b6486d0d7c4d51f2b6a948f81d",
         "callback" => "/auth_callback"
     )
 );
@@ -30,6 +30,15 @@ class Routes {
         return $protocol . $host;
     }
 
+    public static function index($maybeRef=null) {
+        $parameters = array();
+        if(isset($maybeRef)) {
+            $parameters['ref'] = $maybeRef;
+        }
+        $queryString = http_build_query($parameters);
+        return Routes::baseUrl() . '/index.php?' . $queryString;
+    }
+
     public static function detail($id, $slug, $maybeRef=null) {
         $parameters = array(
             "id" => $id,
@@ -43,10 +52,32 @@ class Routes {
     }
 
     public static function search($maybeRef=null) {
+        $parameters = array();
         if(isset($maybeRef)) {
             $parameters['ref'] = $maybeRef;
         }
-        return Routes::baseUrl() . '/search.php';
+        $queryString = http_build_query($parameters);
+        return Routes::baseUrl() . '/search.php?' . $queryString;
+    }
+
+    public static function signin() {
+        return Routes::baseUrl() . '/signin.php';
+    }
+
+    public static function authCallback($maybeCode=null, $maybeRedirectUri=null) {
+        $parameters = array();
+        if(isset($maybeCode)) {
+            $parameters['code'] = $maybeCode;
+        }
+        if(isset($maybeRedirectUri)) {
+            $parameters['redirect_uri'] = $maybeRedirectUri;
+        }
+        $queryString = http_build_query($parameters);
+        return Routes::baseUrl() . '/oauthCallback.php?' .$queryString;
+    }
+
+    public static function signout() {
+        return Routes::baseUrl() . '/signout.php';
     }
 }
 

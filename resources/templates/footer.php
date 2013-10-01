@@ -1,6 +1,11 @@
     <footer>
       <hr/>
-      <a href="@routes.Prismic.signin">Sign in to preview changes</a>
+      <?php
+          $hasPrivilegedAccess = $ctx->hasPrivilegedAccess();
+          if(!$hasPrivilegedAccess) {
+             echo '<a href="'. Routes::signin() . '">Sign in to preview changes</a>';
+          }
+      ?>
     </footer>
   </body>
 </html>

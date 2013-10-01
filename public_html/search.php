@@ -8,7 +8,19 @@
     $ctx = Prismic::context();
     $maybeQuery = isset($_POST['q']) ? $_POST['q'] : '';
     $q = '[[:d = fulltext(document, "' . $maybeQuery . '")]]';
-    $documents = $ctx->api->forms()->everything->query($q)->ref($ctx->ref)->submit();
+
+    try {
+        $documents = $ctx->api->forms()->everything->query($q)->ref($ctx->ref)->submit();
+    } catch (prismic\ForbiddenException $e) {
+        header('Location: ' . Routes::signin());
+        exit('Forbidden');
+    } catch (prismic\UnauthorizedException $e) {
+        header('Location: ' . Routes::index());
+        exit('Unauthorized');
+    }  catch(prismic\NotFoundException $e) {
+        exit("Not Found");
+    }
+
     $documentsSize = count($documents);
 ?>
 
@@ -31,3 +43,7 @@
      };
   ?>
 </ul>
+
+<p>
+  <a href="<?php echo Routes::index($ctx->ref) ?>">Back to home</a>
+</p>
