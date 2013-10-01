@@ -5,11 +5,10 @@
 ?>
 
 <?php
-    $ctx = Prismic::context();
-    $maybeQuery = isset($_POST['q']) ? $_POST['q'] : '';
-    $q = '[[:d = fulltext(document, "' . $maybeQuery . '")]]';
-
     try {
+        $ctx = Prismic::context();
+        $maybeQuery = isset($_POST['q']) ? $_POST['q'] : '';
+        $q = '[[:d = fulltext(document, "' . $maybeQuery . '")]]';
         $documents = $ctx->api->forms()->everything->query($q)->ref($ctx->ref)->submit();
     } catch (prismic\ForbiddenException $e) {
         header('Location: ' . Routes::signin());

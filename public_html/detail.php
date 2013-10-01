@@ -2,7 +2,6 @@
     require_once("../resources/config.php");
     require_once(LIBRARIES_PATH . "/Prismic.php");
 
-    $ctx = Prismic::context();
     $id = isset($_GET['id']) ? $_GET['id'] : null;
     $slug = isset($_GET['slug']) ? $_GET['slug'] : null;
     $maybeRef = isset($_GET['ref']) ? $_GET['ref'] : null;
@@ -13,6 +12,7 @@
     }
 
     try {
+        $ctx = Prismic::context();
         $maybeDocument = Prismic::getDocument($id);
     } catch (prismic\ForbiddenException $e) {
         header('Location: ' . Routes::signin());
@@ -26,7 +26,7 @@
 
     if(isset($maybeDocument)) {
         if($maybeDocument->slug() != $slug && $maybeDocument->containsSlug($slug)) {
-            header('Location: ' . Routes::details($id, $maybeDocument->slug, $maybeRef));
+            header('Location: ' . Routes::detail($id, $maybeDocument->slug, $maybeRef));
             exit('Moved Permanently');
         } else if($maybeDocument->slug() != $slug){
             header('HTTP/1.1 404 Not Found', true, 404);
@@ -47,7 +47,7 @@
     require_once(TEMPLATES_PATH . "/header.php");
 ?>
 
-<article id="<?php echo $document->id ?>">
+<article id="<?php echo $id ?>">
 <?php
     global $linkResolver;
     echo $maybeDocument->asHtml($linkResolver);
