@@ -1,8 +1,8 @@
-Prismic.io starter for PHP
+## Prismic.io starter for PHP
 
 This is a blank PHP project that will connect to any prismic.io repository. It uses the prismic.io PHP developement kit, and provides few helpers to use it with PHP.
 
-Licence
+### Licence
 
 This software is licensed under the Apache 2 license, quoted below.
 
