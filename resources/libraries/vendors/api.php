@@ -2,7 +2,7 @@
 
 namespace prismic;
 
-require_once(VENDORS_PATH . "/fragments.php");
+require_once("fragments.php");
 
 if (!function_exists('curl_init')) {
     throw new \Exception('Prismic needs the CURL PHP extension.');
@@ -461,7 +461,7 @@ class WSResponse {
     public static function check($response) {
         if($response->status != 200) {
             if($response->status == 401) {
-                throw new UnauthorizeException();
+                throw new UnauthorizedException();
             }
             else if($response->status == 403) {
                 throw new ForbiddenException();

@@ -2,10 +2,10 @@
 
 $CONFIG = array(
     "prismic" => array(
-        "api" => "http://lesbonneschoses.wroom.dev/api",
+        "api" => "https://lesbonneschoses.prismic.io/api",
         "token" => null,
-        "clientId" => "UknxpTLCasABLxN4",
-        "clientSecret" => "2800c6b6486d0d7c4d51f2b6a948f81d",
+        "clientId" => null,
+        "clientSecret" => null,
         "callback" => "/auth_callback"
     )
 );

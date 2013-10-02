@@ -9,6 +9,7 @@
         header('Location: ' . Routes::signin());
         exit('Forbidden');
     } catch (prismic\UnauthorizedException $e) {
+        setcookie('ACCESS_TOKEN', "", time() - 1);
         header('Location: ' . Routes::index());
         exit('Unauthorized');
     }  catch(prismic\NotFoundException $e) {
