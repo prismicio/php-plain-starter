@@ -24,7 +24,7 @@ class Routes {
         $host = $_SERVER["HTTP_HOST"];
         $protocol = "http";
         if(isset($_SERVER['HTTPS'])) {
-            $protocol = $protocol . 'S';
+            $protocol = $protocol . 's';
         }
         $protocol = $protocol . '://';
         return $protocol . $host;
