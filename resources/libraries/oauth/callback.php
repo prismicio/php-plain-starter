@@ -1,7 +1,6 @@
 <?php
     require_once("../resources/config.php");
     require_once(LIBRARIES_PATH . "/Prismic.php");
-    require_once(VENDORS_PATH . "/api.php");
 
     $maybeCode = isset($_GET['code']) ? $_GET['code'] : null;
     if(!isset($maybeCode)) {
@@ -20,13 +19,14 @@
         "client_secret" => Prismic::config("prismic.clientSecret")
     );
 
-    $response = prismic\WS::post($api->oauthTokenEndpoint(), $data);
-    if($response->status == 200) {
+    try {
+        $response = Prismic\Api::getClient()->post($api->oauthTokenEndpoint(), null, $data)->send();
         $url = isset($maybeRedirectUri) ? $maybeRedirectUri : Routes::index();
-        setcookie('ACCESS_TOKEN', $response->data->access_token);
+        $json = $response->json();
+        setcookie('ACCESS_TOKEN', $json['access_token']);
         header('Location: ' . $url);
-        exit(0);
-    } else {
+    } catch (Guzzle\Http\Exception\BadResponseException $e) {
         header('HTTP/1.0 401 Unauthorized');
+        exit($response->getStatusCode());
     }
 ?>

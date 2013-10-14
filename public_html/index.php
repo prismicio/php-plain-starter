@@ -5,15 +5,20 @@
     try {
         $ctx = Prismic::context();
         $documents = $ctx->api->forms()->everything->ref($ctx->ref)->submit();
-    } catch (prismic\ForbiddenException $e) {
-        header('Location: ' . Routes::signin());
-        exit('Forbidden');
-    } catch (prismic\UnauthorizedException $e) {
-        setcookie('ACCESS_TOKEN', "", time() - 1);
-        header('Location: ' . Routes::index());
-        exit('Unauthorized');
-    }  catch(prismic\NotFoundException $e) {
-        exit("Not Found");
+    } catch (Guzzle\Http\Exception\BadResponseException $e) {
+        $response = $e->getResponse();
+        if($response->getStatusCode() == 403) {
+            header('Location: ' . Routes::signin());
+            exit('Forbidden');
+        }
+        else if($response->getStatusCode() == 401) {
+            setcookie('ACCESS_TOKEN', "", time() - 1);
+            header('Location: ' . Routes::index());
+            exit('Unauthorized');
+        }
+        else if($response->getStatusCode() == 404) {
+            exit("Not Found");
+        }
     }
 
     $title="All documents";

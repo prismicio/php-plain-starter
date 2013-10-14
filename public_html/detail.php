@@ -11,17 +11,24 @@
         exit('Bad Request');
     }
 
+    $maybeDocument = null;
     try {
         $ctx = Prismic::context();
         $maybeDocument = Prismic::getDocument($id);
-    } catch (prismic\ForbiddenException $e) {
-        header('Location: ' . Routes::signin());
-        exit('Forbidden');
-    } catch (prismic\UnauthorizedException $e) {
-        header('Location: ' . Routes::index());
-        exit('Unauthorized');
-    }  catch(prismic\NotFoundException $e) {
-        exit("Not Found");
+    } catch (Guzzle\Http\Exception\BadResponseException $e) {
+        $response = $e->getResponse();
+        if($response->getStatusCode() == 403) {
+            header('Location: ' . Routes::signin());
+            exit('Forbidden');
+        }
+        else if($response->getStatusCode() == 401) {
+            setcookie('ACCESS_TOKEN', "", time() - 1);
+            header('Location: ' . Routes::index());
+            exit('Unauthorized');
+        }
+        else if($response->getStatusCode() == 404) {
+            exit("Not Found");
+        }
     }
 
     if(isset($maybeDocument)) {
@@ -34,7 +41,7 @@
         }
     }
 
-    $title="Document detail - " . $maybeDocument->slug();
+    $title="Document detail - " . $slug;
 
     // For ref Form in toolbar.php
     $hiddenToolbar = array(
@@ -50,7 +57,9 @@
 <article id="<?php echo $id ?>">
 <?php
     global $linkResolver;
-    echo $maybeDocument->asHtml($linkResolver);
+    if(isset($maybeDocument)) {
+        echo $maybeDocument->asHtml($linkResolver);
+    }
 ?>
 </article>
 

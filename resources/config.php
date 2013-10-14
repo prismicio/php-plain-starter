@@ -12,8 +12,6 @@ $CONFIG = array(
 
 defined("LIBRARIES_PATH") or define("LIBRARIES_PATH", realpath(dirname(__FILE__) . '/libraries'));
 
-defined("VENDORS_PATH") or define("VENDORS_PATH", realpath(dirname(__FILE__) . '/libraries/vendors'));
-
 defined("TEMPLATES_PATH") or define("TEMPLATES_PATH", realpath(dirname(__FILE__) . '/templates'));
 
 require_once(LIBRARIES_PATH . "/Prismic.php");

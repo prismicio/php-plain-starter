@@ -1,9 +1,8 @@
 <?php
 
-require_once("../resources/config.php");
-require_once("../resources/libraries/vendors/api.php");
+include_once(__DIR__.'/../../vendor/autoload.php');
 
-use prismic\API as API;
+use Prismic\Api;
 
 class Context {
 
@@ -76,7 +75,7 @@ class Prismic {
     }
 
     public static function apiHome($maybeAccessToken = null) {
-        return API::get(self::config('prismic.api'), $maybeAccessToken);
+        return Api::get(self::config('prismic.api'), $maybeAccessToken);
     }
 
     public static function getDocument($id) {
