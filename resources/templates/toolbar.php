@@ -7,18 +7,18 @@
     <label for="releaseSelector">See this website: </label>
     <select id="releaseSelector" name="ref" onchange="this.form.submit()">
        <?php
-          $values = array_values($ctx->api->refs());
-          $refs = array_map(function($value) { return $value->ref; }, $values);
-          if(!in_array($ctx->ref, $refs)) {
+          $values = array_values($ctx->getApi()->refs());
+          $refs = array_map(function($value) { return $value->getRef(); }, $values);
+          if(!in_array($ctx->getRef(), $refs)) {
               echo '<option>?</option>';
           }
        ?>
-       <option value=""<?php echo ($ctx->ref == $ctx->api->master()->ref) ? 'selected="selected"' : '' ?>>As currently seen by guest visitors</option>
+          <option value=""<?php echo ($ctx->getRef() == $ctx->getApi()->master()->getRef()) ? 'selected="selected"' : '' ?>>As currently seen by guest visitors</option>
        <optgroup label="Or preview the website in a future release:">
        <?php
-         $allButMaster = array_filter($values, function($value) { return !$value->isMasterRef; });
+         $allButMaster = array_filter($values, function($value) { return !$value->isMasterRef(); });
          foreach($allButMaster as $ref) {
-             echo '<option value="' . $ref->ref . '" '. (($ctx->ref == $ref->ref) ? "selected=\"selected\"" : "") . '>As '. $ref->label . ' ' . $ref->scheduledAt . '</option>';
+             echo '<option value="' . $ref->getRef() . '" '. (($ctx->getRef() == $ref->getRef()) ? "selected=\"selected\"" : "") . '>As '. $ref->getLabel() . ' ' . $ref->scheduledAt . '</option>';
          }
        ?>
       </optgroup>

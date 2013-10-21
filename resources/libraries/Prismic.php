@@ -24,14 +24,20 @@ class Context {
         }
     }
 
-    function hasPrivilegedAccess() {
+    public function hasPrivilegedAccess() {
         return isset($this->maybeAccessToken);
     }
 
-    public function __get($property) {
-        if(property_exists($this, $property)) {
-            return $this->$property;
-        }
+    public function getApi() {
+        return $this->api;
+    }
+
+    public function getRef() {
+        return $this->ref;
+    }
+
+    public function getAccessToken() {
+        return $this->maybeAccessToken;
     }
 }
 
@@ -70,7 +76,7 @@ class Prismic {
     public static function context() {
         $maybeAccessToken = isset($_COOKIE["ACCESS_TOKEN"]) ? $_COOKIE["ACCESS_TOKEN"] : self::config('prismic.token');
         $api = self::apiHome($maybeAccessToken);
-        $ref = isset($_GET["ref"]) ? $_GET["ref"] : $api->master()->ref;
+        $ref = isset($_GET["ref"]) ? $_GET["ref"] : $api->master()->getRef();
         return new Context($api, $ref, $maybeAccessToken);
     }
 
@@ -80,7 +86,7 @@ class Prismic {
 
     public static function getDocument($id) {
         $ctx = self::context();
-        $documents = $ctx->api->forms()->everything->query('[[:d = at(document.id, "'. $id .'")]]')->ref($ctx->ref)->submit();
+        $documents = $ctx->getApi()->forms()->everything->query('[[:d = at(document.id, "'. $id .'")]]')->ref($ctx->getRef())->submit();
         return $documents[0];
     }
 }

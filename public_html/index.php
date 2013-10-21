@@ -4,7 +4,7 @@
 
     try {
         $ctx = Prismic::context();
-        $documents = $ctx->api->forms()->everything->ref($ctx->ref)->submit();
+        $documents = $ctx->getApi()->forms()->everything->ref($ctx->getRef())->submit();
     } catch (Guzzle\Http\Exception\BadResponseException $e) {
         $response = $e->getResponse();
         if($response->getStatusCode() == 403) {
@@ -29,7 +29,7 @@
     require_once(TEMPLATES_PATH . "/header.php");
 ?>
 
-<form action="<?php echo Routes::search($ctx->ref); ?>" method="POST">
+<form action="<?php echo Routes::search($ctx->getRef()); ?>" method="POST">
   <input type="text" name="q" value="">
   <input type="submit" value="Search">
 </form>
@@ -51,7 +51,7 @@
 <ul>
   <?php
      foreach($documents as $document) {
-         echo '<li><a href="'. Routes::detail($document->id, $document->slug(), $ctx->maybeRef()) .'">' . $document->slug() . '</a>';
+         echo '<li><a href="'. Routes::detail($document->getId(), $document->slug(), $ctx->getRef()) .'">' . $document->slug() . '</a>';
      };
   ?>
 </ul>

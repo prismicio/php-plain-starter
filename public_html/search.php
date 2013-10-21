@@ -7,7 +7,7 @@
         $ctx = Prismic::context();
         $maybeQuery = isset($_POST['q']) ? $_POST['q'] : '';
         $q = '[[:d = fulltext(document, "' . $maybeQuery . '")]]';
-        $documents = $ctx->api->forms()->everything->query($q)->ref($ctx->ref)->submit();
+        $documents = $ctx->getApi()->forms()->everything->query($q)->ref($ctx->getRef())->submit();
     } catch (Guzzle\Http\Exception\BadResponseException $e) {
         $response = $e->getResponse();
         if($response->getStatusCode() == 403) {
@@ -42,7 +42,7 @@
 <ul>
   <?php
      foreach($documents as $document) {
-         echo '<li><a href="'. Routes::detail($document->id, $document->slug(), $ctx->maybeRef()) .'">' . $document->slug() . '</a>';
+         echo '<li><a href="'. Routes::detail($document->getId(), $document->slug(), $ctx->getRef()) .'">' . $document->slug() . '</a>';
      };
   ?>
 </ul>

@@ -80,7 +80,7 @@ class Routes {
 }
 
 $linkResolver = function($link) {
-    return Routes::detail($link->id, $link->slug, Prismic::context()->ref);
+    return Routes::detail($link->getId(), $link->getSlug(), Prismic::context()->getRef());
 };
 
 ini_set("error_reporting", "true");
