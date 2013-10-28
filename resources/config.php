@@ -16,74 +16,84 @@ defined("TEMPLATES_PATH") or define("TEMPLATES_PATH", realpath(dirname(__FILE__)
 
 require_once(LIBRARIES_PATH . "/Prismic.php");
 
-class Routes {
-
-    private static function baseUrl() {
+class Routes
+{
+    private static function baseUrl()
+    {
         $host = $_SERVER["HTTP_HOST"];
         $protocol = "http";
-        if(isset($_SERVER['HTTPS'])) {
+        if (isset($_SERVER['HTTPS'])) {
             $protocol = $protocol . 's';
         }
         $protocol = $protocol . '://';
+
         return $protocol . $host;
     }
 
-    public static function index($maybeRef=null) {
+    public static function index($maybeRef=null)
+    {
         $parameters = array();
-        if(isset($maybeRef)) {
+        if (isset($maybeRef)) {
             $parameters['ref'] = $maybeRef;
         }
         $queryString = http_build_query($parameters);
+
         return Routes::baseUrl() . '/index.php?' . $queryString;
     }
 
-    public static function detail($id, $slug, $maybeRef=null) {
+    public static function detail($id, $slug, $maybeRef=null)
+    {
         $parameters = array(
             "id" => $id,
             "slug" => $slug
         );
-        if(isset($maybeRef)) {
+        if (isset($maybeRef)) {
             $parameters['ref'] = $maybeRef;
         }
         $queryString = http_build_query($parameters);
+
         return Routes::baseUrl() . '/detail.php?' . $queryString;
     }
 
-    public static function search($maybeRef=null) {
+    public static function search($maybeRef=null)
+    {
         $parameters = array();
-        if(isset($maybeRef)) {
+        if (isset($maybeRef)) {
             $parameters['ref'] = $maybeRef;
         }
         $queryString = http_build_query($parameters);
+
         return Routes::baseUrl() . '/search.php?' . $queryString;
     }
 
-    public static function signin() {
+    public static function signin()
+    {
         return Routes::baseUrl() . '/signin.php';
     }
 
-    public static function authCallback($maybeCode=null, $maybeRedirectUri=null) {
+    public static function authCallback($maybeCode=null, $maybeRedirectUri=null)
+    {
         $parameters = array();
-        if(isset($maybeCode)) {
+        if (isset($maybeCode)) {
             $parameters['code'] = $maybeCode;
         }
-        if(isset($maybeRedirectUri)) {
+        if (isset($maybeRedirectUri)) {
             $parameters['redirect_uri'] = $maybeRedirectUri;
         }
         $queryString = http_build_query($parameters);
+
         return Routes::baseUrl() . '/oauthCallback.php?' .$queryString;
     }
 
-    public static function signout() {
+    public static function signout()
+    {
         return Routes::baseUrl() . '/signout.php';
     }
 }
 
-$linkResolver = function($link) {
+$linkResolver = function ($link) {
     return Routes::detail($link->getId(), $link->getSlug(), Prismic::context()->getRef());
 };
 
 ini_set("error_reporting", "true");
 error_reporting(E_ALL|E_STRICT);
-
-?>

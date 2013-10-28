@@ -4,22 +4,22 @@ include_once(__DIR__.'/../../vendor/autoload.php');
 
 use Prismic\Api;
 
-class Context {
-
+class Context
+{
     private $api;
     private $ref;
     private $maybeAccessToken;
 
-    function __construct($api, $ref, $maybeAccessToken=null, $linkResolver=null)
+    public function __construct($api, $ref, $maybeAccessToken=null, $linkResolver=null)
     {
         $this->api = $api;
         $this->ref = $ref;
         $this->maybeAccessToken = $maybeAccessToken;
     }
 
-    function maybeRef()
+    public function maybeRef()
     {
-        if($this->ref != $this->api->master()->ref) {
+        if ($this->ref != $this->api->master()->ref) {
             return $this->ref;
         } else {
             return null;
@@ -52,15 +52,16 @@ class Prismic
 
     private static function array_get($path, $array)
     {
-        if(empty($path)){
+        if (empty($path)) {
             return $array;
-        } else if(empty($array)){
+        } elseif (empty($array)) {
             return null;
         } else {
             $key = array_shift($path);
-            if(!isset($array[$key])) {
+            if (!isset($array[$key])) {
                 return null;
             }
+
             return self::array_get($path, $array[$key]);
         }
     }
@@ -70,7 +71,7 @@ class Prismic
         $path = explode('.', $key);
         global $CONFIG;
         $value = self::array_get($path, $CONFIG);
-        if(isset($value)) {
+        if (isset($value)) {
             return $value;
         } else {
             return null;
@@ -80,6 +81,7 @@ class Prismic
     public static function callback()
     {
         $maybeReferer = isset(getallheaders()['Referer']) ? getallheaders()['Referer'] : null;
+
         return Routes::authCallback(null, isset($maybeReferer) ? $maybeReferer : Routes::index());
     }
 
@@ -88,6 +90,7 @@ class Prismic
         $maybeAccessToken = isset($_COOKIE["ACCESS_TOKEN"]) ? $_COOKIE["ACCESS_TOKEN"] : self::config('prismic.token');
         $api = self::apiHome($maybeAccessToken);
         $ref = isset($_GET["ref"]) ? $_GET["ref"] : $api->master()->getRef();
+
         return new Context($api, $ref, $maybeAccessToken);
     }
 
@@ -100,8 +103,7 @@ class Prismic
     {
         $ctx = self::context();
         $documents = $ctx->getApi()->forms()->everything->query('[[:d = at(document.id, "'. $id .'")]]')->ref($ctx->getRef())->submit();
+
         return $documents[0];
     }
 }
-
-?>

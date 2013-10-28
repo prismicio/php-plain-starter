@@ -1,9 +1,9 @@
 <?php
-    require_once("../resources/config.php");
+    require_once '../resources/config.php';
     require_once(LIBRARIES_PATH . "/Prismic.php");
 
     $maybeCode = isset($_GET['code']) ? $_GET['code'] : null;
-    if(!isset($maybeCode)) {
+    if (!isset($maybeCode)) {
         header('HTTP/1.1 400 Bad Request', true, 400);
         exit('Bad Request');
     }
@@ -29,4 +29,3 @@
         header('HTTP/1.0 401 Unauthorized');
         exit($response->getStatusCode());
     }
-?>
