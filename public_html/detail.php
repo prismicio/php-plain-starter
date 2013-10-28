@@ -30,10 +30,10 @@
     }
 
     if (isset($maybeDocument)) {
-        if ($maybeDocument->slug() != $slug && $maybeDocument->containsSlug($slug)) {
+        if ($maybeDocument->getSlug() != $slug && $maybeDocument->containsSlug($slug)) {
             header('Location: ' . Routes::detail($id, $maybeDocument->slug, $maybeRef));
             exit('Moved Permanently');
-        } elseif ($maybeDocument->slug() != $slug) {
+        } elseif ($maybeDocument->getSlug() != $slug) {
             header('HTTP/1.1 404 Not Found', true, 404);
             exit('Not Found');
         }

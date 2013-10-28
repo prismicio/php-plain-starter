@@ -52,7 +52,7 @@
 <ul>
   <?php
      foreach ($documents as $document) {
-         echo '<li><a href="'. Routes::detail($document->getId(), $document->slug(), $ctx->getRef()) .'">' . $document->slug() . '</a>';
+         echo '<li><a href="'. Routes::detail($document->getId(), $document->getSlug(), $ctx->getRef()) .'">' . $document->getSlug() . '</a>';
      };
   ?>
 </ul>
