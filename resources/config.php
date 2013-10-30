@@ -91,9 +91,12 @@ class Routes
     }
 }
 
-$linkResolver = function ($link) {
-    return Routes::detail($link->getId(), $link->getSlug(), Prismic::context()->getRef());
+class LinkResolver extends \Prismic\LinkResolver {
+    public function resolve($link) {
+        return Routes::detail($link->getId(), $link->getSlug(), Prismic::context()->getRef());
+    }
 };
+$linkResolver = new LinkResolver();
 
 ini_set("error_reporting", "true");
 error_reporting(E_ALL|E_STRICT);
