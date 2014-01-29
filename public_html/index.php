@@ -23,7 +23,7 @@
     }
 
     $title="All documents";
-    $documentsSize = isset($document) ? count($documents) : 0;
+    $documentsSize = isset($documents) ? count($documents) : 0;
 ?>
 
 <?php
