@@ -16,17 +16,7 @@
         $ctx = Prismic::context();
         $maybeDocument = Prismic::getDocument($id);
     } catch (Guzzle\Http\Exception\BadResponseException $e) {
-        $response = $e->getResponse();
-        if ($response->getStatusCode() == 403) {
-            header('Location: ' . Routes::signin());
-            exit('Forbidden');
-        } elseif ($response->getStatusCode() == 401) {
-            setcookie('ACCESS_TOKEN', "", time() - 1);
-            header('Location: ' . Routes::index());
-            exit('Unauthorized');
-        } elseif ($response->getStatusCode() == 404) {
-            exit("Not Found");
-        }
+        Prismic::handlePrismicException($e);
     }
 
     if (isset($maybeDocument)) {
