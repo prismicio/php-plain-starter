@@ -106,4 +106,23 @@ class Prismic
 
         return $documents[0];
     }
+
+    public static function handlePrismicException($e)
+    {
+        $response = $e->getResponse();
+        if ($response->getStatusCode() == 403) {
+            header('Location: ' . Routes::signin());
+            exit('Forbidden');
+        } elseif ($response->getStatusCode() == 401) {
+            setcookie('ACCESS_TOKEN', "", time() - 1);
+            header('Location: ' . Routes::index());
+            exit('Unauthorized');
+        } elseif ($response->getStatusCode() == 404) {
+            header("HTTP/1.0 404 Not Found");
+            exit("Not Found");
+        } else {
+            echo $response->getStatusCode();
+            exit($response->getStatusCode());
+        }
+    }
 }
