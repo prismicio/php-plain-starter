@@ -6,20 +6,7 @@
         $ctx = Prismic::context();
         $documents = $ctx->getApi()->forms()->everything->ref($ctx->getRef())->submit();
     } catch (Guzzle\Http\Exception\BadResponseException $e) {
-        $response = $e->getResponse();
-        if ($response->getStatusCode() == 403) {
-            header('Location: ' . Routes::signin());
-            exit('Forbidden');
-        } elseif ($response->getStatusCode() == 401) {
-            setcookie('ACCESS_TOKEN', "", time() - 1);
-            header('Location: ' . Routes::index());
-            exit('Unauthorized');
-        } elseif ($response->getStatusCode() == 404) {
-            exit("Not Found");
-        } else {
-            echo $response->getStatusCode();
-            exit($response->getStatusCode());
-        }
+        Prismic::handlePrismicException($e);
     }
 
     $title="All documents";
