@@ -80,7 +80,8 @@ class Prismic
 
     public static function callback()
     {
-        $maybeReferer = isset(getallheaders()['Referer']) ? getallheaders()['Referer'] : null;
+        $allheaders = getallheaders();
+        $maybeReferer = isset($allheaders['Referer']) ? $allheaders['Referer'] : null;
 
         return Routes::authCallback(null, isset($maybeReferer) ? $maybeReferer : Routes::index());
     }
