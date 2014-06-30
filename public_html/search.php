@@ -17,19 +17,19 @@
 
 <h1>
   <?php
-     if ($documentsSize == 0) {
+     if ($documents->getTotalResultsSize() == 0) {
          echo 'No documents found';
-     } elseif ($documentsSize == 1) {
+     } elseif ($documents->getTotalResultsSize() == 1) {
          echo 'One document found';
      } else {
-         echo $documentsSize . ' documents found';
+         echo $documents->getTotalResultsSize() . ' documents found';
      }
   ?>
 </h1>
 
 <ul>
   <?php
-     foreach ($documents as $document) {
+     foreach ($documents->getResults() as $document) {
          echo '<li><a href="'. Routes::detail($document->getId(), $document->getSlug(), $ctx->getRef()) .'">' . $document->getSlug() . '</a>';
      };
   ?>

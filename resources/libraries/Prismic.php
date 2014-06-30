@@ -103,7 +103,7 @@ class Prismic
     public static function getDocument($id)
     {
         $ctx = self::context();
-        $documents = $ctx->getApi()->forms()->everything->query('[[:d = at(document.id, "'. $id .'")]]')->ref($ctx->getRef())->submit();
+        $documents = $ctx->getApi()->forms()->everything->query('[[:d = at(document.id, "'. $id .'")]]')->ref($ctx->getRef())->submit()->getResults();
 
         return $documents[0];
     }
