@@ -55,9 +55,11 @@ class Routes
         return Routes::baseUrl() . '/detail.php?' . $queryString;
     }
 
-    public static function search($maybeRef=null)
+    public static function search($q, $maybeRef=null)
     {
-        $parameters = array();
+        $parameters = array(
+            "q" => $q
+        );
         if (isset($maybeRef)) {
             $parameters['ref'] = $maybeRef;
         }
