@@ -5,9 +5,10 @@
 
     try {
         $ctx = Prismic::context();
-        $maybeQuery = isset($_POST['q']) ? $_POST['q'] : '';
+        $maybeQuery = isset($_GET['q']) ? $_GET['q'] : '';
         $q = '[[:d = fulltext(document, "' . $maybeQuery . '")]]';
-        $documents = $ctx->getApi()->forms()->everything->query($q)->ref($ctx->getRef())->submit();
+        $page = isset($_GET['page']) ? $_GET['page'] : 1;
+        $documents = $ctx->getApi()->forms()->everything->query($q)->page($page)->ref($ctx->getRef())->submit();
     } catch (Guzzle\Http\Exception\BadResponseException $e) {
         Prismic::handlePrismicException($e);
     }
@@ -36,5 +37,10 @@
 </ul>
 
 <p>
-  <a href="<?php echo Routes::index($ctx->ref) ?>">Back to home</a>
+  <a href="<?php echo Routes::index() ?>">Back to home</a>
 </p>
+
+<?php
+    $urlWithoutPagination = Routes::search($maybeQuery);
+    require_once(TEMPLATES_PATH . "/pagination.php");
+    require_once(TEMPLATES_PATH . "/footer.php");
