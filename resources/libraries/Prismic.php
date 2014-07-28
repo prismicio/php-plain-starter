@@ -108,15 +108,42 @@ class Prismic
         return $documents[0];
     }
 
+    public static function getOauthInitiateEndpoint($maybeAccessToken = null) {
+        try {
+            return self::apiHome($maybeAccessToken)->oauthInitiateEndpoint();
+        } catch (Guzzle\Http\Exception\HttpException $e) {
+            $response = $e->getResponse();
+            if($response->getStatusCode() == 401) {
+                $body = json_decode($response->getBody(true));
+                return $body->oauth_initiate;
+            } else {
+                return null;
+            }
+        }
+    }
+
+    public static function getOauthTokenEndpoint($maybeAccessToken = null) {
+        try {
+            return self::apiHome($maybeAccessToken)->oauthTokenEndpoint();
+        } catch (Guzzle\Http\Exception\HttpException $e) {
+            $response = $e->getResponse();
+            if($response->getStatusCode() == 401) {
+                $body = json_decode($response->getBody(true));
+                return $body->oauth_token;
+            } else {
+                return null;
+            }
+        }
+    }
+
     public static function handlePrismicException($e)
     {
         $response = $e->getResponse();
         if ($response->getStatusCode() == 403) {
-            header('Location: ' . Routes::signin());
             exit('Forbidden');
         } elseif ($response->getStatusCode() == 401) {
             setcookie('ACCESS_TOKEN', "", time() - 1);
-            header('Location: ' . Routes::index());
+            header('Location: ' . Routes::signin());
             exit('Unauthorized');
         } elseif ($response->getStatusCode() == 404) {
             header("HTTP/1.0 404 Not Found");

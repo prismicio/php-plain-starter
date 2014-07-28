@@ -2,7 +2,6 @@
     require_once '../resources/config.php';
     require_once(LIBRARIES_PATH . "/Prismic.php");
 
-    $api = Prismic::apiHome();
     $maybeClientId = Prismic::config('prismic.clientId');
     $maybeClientSecret = Prismic::config('prismic.clientSecret');
     if (!isset($maybeClientId)) {
@@ -17,5 +16,9 @@
         "scope" => "master+releases"
     );
     $queryString = http_build_query($params);
-    header('Location: ' . $api->oauthInitiateEndpoint() . '?' . $queryString, false, 301);
-    exit(0);
+    $oauthInitiateEndpoint = Prismic::getOauthInitiateEndpoint();
+    if($oauthInitiateEndpoint) {
+        header('Location: ' . $oauthInitiateEndpoint . '?' . $queryString, false, 301);
+    } else {
+        exit('Unexpected error');
+    }

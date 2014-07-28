@@ -1,8 +1,7 @@
     <footer>
       <hr/>
       <?php
-          $hasPrivilegedAccess = $ctx->hasPrivilegedAccess();
-          if (!$hasPrivilegedAccess) {
+          if (!$ctx->hasPrivilegedAccess()) {
              echo '<a href="'. Routes::signin() . '">Sign in to preview changes</a>';
           }
       ?>
