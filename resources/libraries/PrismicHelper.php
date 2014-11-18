@@ -47,7 +47,7 @@ class Context
     }
 }
 
-class Prismic
+class PrismicHelper
 {
 
     private static function array_get($path, $array)
@@ -88,9 +88,9 @@ class Prismic
 
     public static function context()
     {
-        $maybeAccessToken = isset($_COOKIE["ACCESS_TOKEN"]) ? $_COOKIE["ACCESS_TOKEN"] : self::config('prismic.token');
+        $maybeAccessToken = self::config('prismic.token');
         $api = self::apiHome($maybeAccessToken);
-        $ref = isset($_GET["ref"]) ? $_GET["ref"] : $api->master()->getRef();
+        $ref = isset($_COOKIE[Prismic\PREVIEW_COOKIE]) ? $_COOKIE[Prismic\PREVIEW_COOKIE] : $api->master()->getRef();
 
         return new Context($api, $ref, $maybeAccessToken);
     }
@@ -105,7 +105,11 @@ class Prismic
         $ctx = self::context();
         $documents = $ctx->getApi()->forms()->everything->query('[[:d = at(document.id, "'. $id .'")]]')->ref($ctx->getRef())->submit()->getResults();
 
-        return $documents[0];
+        if (count($documents) > 0) {
+            return $documents[0];
+        } else {
+            return null;
+        }
     }
 
     public static function getOauthInitiateEndpoint($maybeAccessToken = null) {
@@ -141,16 +145,12 @@ class Prismic
         $response = $e->getResponse();
         if ($response->getStatusCode() == 403) {
             exit('Forbidden');
-        } elseif ($response->getStatusCode() == 401) {
-            setcookie('ACCESS_TOKEN', "", time() - 1);
-            header('Location: ' . Routes::signin());
-            exit('Unauthorized');
         } elseif ($response->getStatusCode() == 404) {
             header("HTTP/1.0 404 Not Found");
             exit("Not Found");
         } else {
-            echo $response->getStatusCode();
-            exit($response->getStatusCode());
+            setcookie(Prismic\PREVIEW_COOKIE, "", time() - 1);
+            header('Location: ' . '/');
         }
     }
 }

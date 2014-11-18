@@ -1,6 +1,6 @@
 <?php
     require_once '../resources/config.php';
-    require_once(LIBRARIES_PATH . "/Prismic.php");
+    require_once(LIBRARIES_PATH . "/PrismicHelper.php");
 
     $id = isset($_GET['id']) ? $_GET['id'] : null;
     $slug = isset($_GET['slug']) ? $_GET['slug'] : null;
@@ -13,10 +13,10 @@
 
     $maybeDocument = null;
     try {
-        $ctx = Prismic::context();
-        $maybeDocument = Prismic::getDocument($id);
+        $ctx = PrismicHelper::context();
+        $maybeDocument = PrismicHelper::getDocument($id);
     } catch (Guzzle\Http\Exception\BadResponseException $e) {
-        Prismic::handlePrismicException($e);
+        PrismicHelper::handlePrismicHelperException($e);
     }
 
     if (isset($maybeDocument)) {
@@ -27,6 +27,9 @@
             header('HTTP/1.1 404 Not Found', true, 404);
             exit('Not Found');
         }
+    } else {
+        header('HTTP/1.1 404 Not Found', true, 404);
+        exit('Not Found');
     }
 
     $title="Document detail - " . $slug;

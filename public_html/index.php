@@ -1,12 +1,12 @@
 <?php
     require_once '../resources/config.php';
-    require_once(LIBRARIES_PATH . "/Prismic.php");
+    require_once(LIBRARIES_PATH . "/PrismicHelper.php");
 
     try {
-        $ctx = Prismic::context();
+        $ctx = PrismicHelper::context();
         $documents = $ctx->getApi()->forms()->everything->ref($ctx->getRef())->submit();
     } catch (Guzzle\Http\Exception\BadResponseException $e) {
-        Prismic::handlePrismicException($e);
+        PrismicHelper::handlePrismicHelperException($e);
     }
 
     $title="All documents";
@@ -16,7 +16,7 @@
     require_once(TEMPLATES_PATH . "/header.php");
 ?>
 
-<form action="<?php echo Routes::search($ctx->getRef()); ?>" method="POST">
+<form action="<?php echo Routes::search(); ?>" method="GET">
   <input type="text" name="q" value="">
   <input type="submit" value="Search">
 </form>

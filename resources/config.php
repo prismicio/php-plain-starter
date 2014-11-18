@@ -2,7 +2,7 @@
 
 $CONFIG = array(
     "prismic" => array(
-        "api" => "https://lesbonneschoses.prismic.io/api",
+        "api" => "https://lesbonneschoses-vcerzcwaaohojzo.prismic.io/api",
         "token" => null,
         "clientId" => null,
         "clientSecret" => null,
@@ -14,7 +14,7 @@ defined("LIBRARIES_PATH") or define("LIBRARIES_PATH", realpath(dirname(__FILE__)
 
 defined("TEMPLATES_PATH") or define("TEMPLATES_PATH", realpath(dirname(__FILE__) . '/templates'));
 
-require_once(LIBRARIES_PATH . "/Prismic.php");
+require_once(LIBRARIES_PATH . "/PrismicHelper.php");
 
 class Routes
 {
@@ -93,7 +93,7 @@ class Routes
 
 class LinkResolver extends \Prismic\LinkResolver {
     public function resolve($link) {
-        return Routes::detail($link->getId(), $link->getSlug(), Prismic::context()->getRef());
+        return Routes::detail($link->getId(), $link->getSlug(), PrismicHelper::context()->getRef());
     }
 };
 $linkResolver = new LinkResolver();
