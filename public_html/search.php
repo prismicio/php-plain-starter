@@ -5,7 +5,7 @@
 
     try {
         $ctx = PrismicHelper::context();
-        $maybeQuery = isset($_POST['q']) ? $_POST['q'] : '';
+        $maybeQuery = isset($_GET['q']) ? $_GET['q'] : '';
         $q = '[[:d = fulltext(document, "' . $maybeQuery . '")]]';
         $documents = $ctx->getApi()->forms()->everything->query($q)->ref($ctx->getRef())->submit();
     } catch (Guzzle\Http\Exception\BadResponseException $e) {
