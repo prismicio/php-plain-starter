@@ -9,6 +9,6 @@
         }
     ],
     "require": {
-        "prismic/php-sdk": "1.4.3"
+        "prismic/php-sdk": "1.5.6"
     }
 }
