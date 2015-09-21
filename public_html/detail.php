@@ -45,7 +45,7 @@
     require_once(TEMPLATES_PATH . "/header.php");
 ?>
 
-<article id="<?php echo $id ?>">
+<article id="<?= $id ?>" data-wio-id="<?= $id ?>">
 <?php
     global $linkResolver;
     if (isset($maybeDocument)) {

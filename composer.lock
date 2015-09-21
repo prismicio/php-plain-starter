@@ -1,10 +1,10 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "aa113c57832e4962feb3e6a6c1044ed5",
+    "hash": "e1146ab7741193555f92ab16d90fcca1",
     "packages": [
         {
             "name": "egeloen/http-adapter",
@@ -86,16 +86,16 @@
         },
         {
             "name": "prismic/php-sdk",
-            "version": "1.5.6",
+            "version": "1.5.12",
             "source": {
                 "type": "git",
                 "url": "https://github.com/prismicio/php-kit.git",
-                "reference": "bbbf890e462c686a349a7c683719daa62649ffb8"
+                "reference": "b35cf1216fc54ad3a7cf30052931c357f2d433bd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/prismicio/php-kit/zipball/bbbf890e462c686a349a7c683719daa62649ffb8",
-                "reference": "bbbf890e462c686a349a7c683719daa62649ffb8",
+                "url": "https://api.github.com/repos/prismicio/php-kit/zipball/b35cf1216fc54ad3a7cf30052931c357f2d433bd",
+                "reference": "b35cf1216fc54ad3a7cf30052931c357f2d433bd",
                 "shasum": ""
             },
             "require": {
@@ -127,7 +127,7 @@
                 "Apache 2 license"
             ],
             "description": "PHP development kit for prismic.io",
-            "time": "2015-04-24 07:17:18"
+            "time": "2015-08-05 12:21:58"
         },
         {
             "name": "psr/http-message",
@@ -177,21 +177,20 @@
         },
         {
             "name": "symfony/event-dispatcher",
-            "version": "v2.6.7",
-            "target-dir": "Symfony/Component/EventDispatcher",
+            "version": "v2.7.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/EventDispatcher.git",
-                "reference": "672593bc4b0043a0acf91903bb75a1c82d8f2e02"
+                "reference": "b58c916f1db03a611b72dd702564f30ad8fe83fa"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/EventDispatcher/zipball/672593bc4b0043a0acf91903bb75a1c82d8f2e02",
-                "reference": "672593bc4b0043a0acf91903bb75a1c82d8f2e02",
+                "url": "https://api.github.com/repos/symfony/EventDispatcher/zipball/b58c916f1db03a611b72dd702564f30ad8fe83fa",
+                "reference": "b58c916f1db03a611b72dd702564f30ad8fe83fa",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.3.3"
+                "php": ">=5.3.9"
             },
             "require-dev": {
                 "psr/log": "~1.0",
@@ -208,11 +207,11 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.6-dev"
+                    "dev-master": "2.7-dev"
                 }
             },
             "autoload": {
-                "psr-0": {
+                "psr-4": {
                     "Symfony\\Component\\EventDispatcher\\": ""
                 }
             },
@@ -232,7 +231,7 @@
             ],
             "description": "Symfony EventDispatcher Component",
             "homepage": "https://symfony.com",
-            "time": "2015-05-02 15:18:45"
+            "time": "2015-08-24 07:13:45"
         }
     ],
     "packages-dev": [],
