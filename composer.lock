@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "e191e96a8765a0d217c9e5f2f40ea0bd",
+    "hash": "b2524a2018ae721d524271f7fe2913af",
     "packages": [
         {
             "name": "egeloen/http-adapter",
@@ -86,16 +86,16 @@
         },
         {
             "name": "prismic/php-sdk",
-            "version": "1.6.0",
+            "version": "1.6.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/prismicio/php-kit.git",
-                "reference": "d22faee6e130cfa237b0b3a01c35dba16eab1e45"
+                "reference": "db756e74c61cdba151b50780f973fb08e27d094b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/prismicio/php-kit/zipball/d22faee6e130cfa237b0b3a01c35dba16eab1e45",
-                "reference": "d22faee6e130cfa237b0b3a01c35dba16eab1e45",
+                "url": "https://api.github.com/repos/prismicio/php-kit/zipball/db756e74c61cdba151b50780f973fb08e27d094b",
+                "reference": "db756e74c61cdba151b50780f973fb08e27d094b",
                 "shasum": ""
             },
             "require": {
@@ -127,7 +127,7 @@
                 "Apache 2 license"
             ],
             "description": "PHP development kit for prismic.io",
-            "time": "2015-11-12 15:28:54"
+            "time": "2015-11-20 10:06:18"
         },
         {
             "name": "psr/http-message",
