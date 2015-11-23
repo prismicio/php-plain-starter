@@ -1,15 +1,18 @@
 <?php
-    require_once '../resources/config.php';
-    require_once(LIBRARIES_PATH . "/PrismicHelper.php");
 
-    try {
-        $ctx = PrismicHelper::context();
-        $documents = $ctx->getApi()->forms()->everything->ref($ctx->getRef())->submit();
-    } catch (Guzzle\Http\Exception\BadResponseException $e) {
-        PrismicHelper::handlePrismicHelperException($e);
-    }
+require_once '../resources/config.php';
+include_once(__DIR__.'/../vendor/autoload.php');
 
-    $title="All documents";
+use Prismic\Api;
+
+try {
+    $api = Api::get($PRISMIC_URL, $PRISMIC_TOKEN);
+    $documents = $api->query(null);
+} catch (Guzzle\Http\Exception\BadResponseException $e) {
+    handlePrismicHelperException($e);
+}
+
+$title="All documents";
 ?>
 
 <?php
@@ -38,7 +41,7 @@
 <ul>
   <?php
      foreach ($documents->getResults() as $document) {
-         echo '<li><a href="'. Routes::detail($document->getId(), $document->getSlug(), $ctx->getRef()) .'">' . $document->getSlug() . '</a>';
+         echo '<li><a href="'. Routes::detail($document->getId(), $document->getSlug()) .'">' . $document->getSlug() . '</a>';
      };
   ?>
 </ul>

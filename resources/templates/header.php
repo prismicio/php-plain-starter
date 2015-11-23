@@ -8,7 +8,7 @@
     <? /* Required for previews and experiments */ ?>
     <script>
       window.prismic = {
-        endpoint: '<?= PrismicHelper::config('prismic.api') ?>'
+        endpoint: '<?= $PRISMIC_URL ?>'
       };
     </script>
     <script src="//static.cdn.prismic.io/prismic.js"></script>

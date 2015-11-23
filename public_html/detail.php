@@ -1,49 +1,50 @@
 <?php
-    require_once '../resources/config.php';
-    require_once(LIBRARIES_PATH . "/PrismicHelper.php");
 
-    $id = isset($_GET['id']) ? $_GET['id'] : null;
-    $slug = isset($_GET['slug']) ? $_GET['slug'] : null;
-    $maybeRef = isset($_GET['ref']) ? $_GET['ref'] : null;
+require_once '../resources/config.php';
+include_once(__DIR__.'/../vendor/autoload.php');
 
-    if (!isset($id) || !isset($slug)) {
-        header('HTTP/1.1 400 Bad Request', true, 400);
-        exit('Bad Request');
-    }
+use Prismic\Api;
 
-    $maybeDocument = null;
-    try {
-        $ctx = PrismicHelper::context();
-        $maybeDocument = PrismicHelper::getDocument($id);
-    } catch (Guzzle\Http\Exception\BadResponseException $e) {
-        PrismicHelper::handlePrismicHelperException($e);
-    }
+$id = isset($_GET['id']) ? $_GET['id'] : null;
+$slug = isset($_GET['slug']) ? $_GET['slug'] : null;
 
-    if (isset($maybeDocument)) {
-        if ($maybeDocument->getSlug() != $slug && $maybeDocument->containsSlug($slug)) {
-            header('Location: ' . Routes::detail($id, $maybeDocument->slug, $maybeRef));
-            exit('Moved Permanently');
-        } elseif ($maybeDocument->getSlug() != $slug) {
-            header('HTTP/1.1 404 Not Found', true, 404);
-            exit('Not Found');
-        }
-    } else {
+if (!isset($id) || !isset($slug)) {
+    header('HTTP/1.1 400 Bad Request', true, 400);
+    exit('Bad Request');
+}
+
+$maybeDocument = null;
+try {
+    $api = Api::get($PRISMIC_URL, $PRISMIC_TOKEN);
+    $maybeDocument = $api->getByID($id);
+} catch (Guzzle\Http\Exception\BadResponseException $e) {
+    handlePrismicHelperException($e);
+}
+
+if (isset($maybeDocument)) {
+    if ($maybeDocument->getSlug() != $slug && $maybeDocument->containsSlug($slug)) {
+        header('Location: ' . Routes::detail($id, $maybeDocument->slug));
+        exit('Moved Permanently');
+    } elseif ($maybeDocument->getSlug() != $slug) {
         header('HTTP/1.1 404 Not Found', true, 404);
         exit('Not Found');
     }
+} else {
+    header('HTTP/1.1 404 Not Found', true, 404);
+    exit('Not Found');
+}
 
-    $title="Document detail - " . $slug;
+$title="Document detail - " . $slug;
 
-    // For ref Form in toolbar.php
-    $hiddenToolbar = array(
-        "id" => htmlspecialchars($id),
-        "slug" => htmlspecialchars($slug)
-    );
+// For ref Form in toolbar.php
+$hiddenToolbar = array(
+    "id" => htmlspecialchars($id),
+    "slug" => htmlspecialchars($slug)
+);
+
 ?>
 
-<?php
-    require_once(TEMPLATES_PATH . "/header.php");
-?>
+<? require_once(TEMPLATES_PATH . "/header.php"); ?>
 
 <article id="<?= $id ?>" data-wio-id="<?= $id ?>">
 <?php
@@ -54,5 +55,5 @@
 ?>
 </article>
 
-<?php
-    require_once(TEMPLATES_PATH . "/footer.php");
+<? require_once(TEMPLATES_PATH . "/footer.php"); ?>
+

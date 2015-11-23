@@ -1,28 +1,33 @@
 <?php
-    require_once '../resources/config.php';
-    require_once(LIBRARIES_PATH . "/PrismicHelper.php");
-    $title="Search results";
 
-    try {
-        $ctx = PrismicHelper::context();
-        $maybeQuery = isset($_GET['q']) ? $_GET['q'] : '';
-        $q = '[[:d = fulltext(document, "' . $maybeQuery . '")]]';
-        $documents = $ctx->getApi()->forms()->everything->query($q)->ref($ctx->getRef())->submit();
-    } catch (Guzzle\Http\Exception\BadResponseException $e) {
-        PrismicHelper::handlePrismicException($e);
-    }
+require_once '../resources/config.php';
+include_once(__DIR__.'/../vendor/autoload.php');
 
-    $documentsSize = count($documents);
+use Prismic\Api;
+
+$title="Search results";
+
+try {
+    $api = Api::get($PRISMIC_URL);
+    $maybeQuery = isset($_GET['q']) ? $_GET['q'] : '';
+    $q = '[[:d = fulltext(document, "' . $maybeQuery . '")]]';
+    $documents = $api->query($q);
+} catch (Guzzle\Http\Exception\BadResponseException $e) {
+    handlePrismicException($e);
+}
+
+$size = count($documents->getTotalResultsSize());
+
 ?>
 
 <h1>
   <?php
-     if ($documents->getTotalResultsSize() == 0) {
+     if ($size == 0) {
          echo 'No documents found';
-     } elseif ($documents->getTotalResultsSize() == 1) {
+     } elseif ($size == 1) {
          echo 'One document found';
      } else {
-         echo $documents->getTotalResultsSize() . ' documents found';
+         echo $size . ' documents found';
      }
   ?>
 </h1>
@@ -30,7 +35,7 @@
 <ul>
   <?php
      foreach ($documents->getResults() as $document) {
-         echo '<li><a href="'. Routes::detail($document->getId(), $document->getSlug(), $ctx->getRef()) .'">' . $document->getSlug() . '</a>';
+         echo '<li><a href="'. Routes::detail($document->getId(), $document->getSlug()) .'">' . $document->getSlug() . '</a>';
      };
   ?>
 </ul>

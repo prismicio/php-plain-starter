@@ -1,20 +1,12 @@
 <?php
 
-$CONFIG = array(
-    "prismic" => array(
-        "api" => "https://lesbonneschoses.prismic.io/api",
-        "token" => null,
-        "clientId" => null,
-        "clientSecret" => null,
-        "callback" => "/auth_callback"
-    )
-);
+include_once(__DIR__.'/../vendor/autoload.php');
+
+$PRISMIC_URL = "https://lesbonneschoses-vcerzcwaaohojzo.prismic.io/api";
+$PRISMIC_TOKEN = null;
 
 defined("LIBRARIES_PATH") or define("LIBRARIES_PATH", realpath(dirname(__FILE__) . '/libraries'));
-
 defined("TEMPLATES_PATH") or define("TEMPLATES_PATH", realpath(dirname(__FILE__) . '/templates'));
-
-require_once(LIBRARIES_PATH . "/PrismicHelper.php");
 
 class Routes
 {
@@ -30,18 +22,15 @@ class Routes
         return $protocol . $host;
     }
 
-    public static function index($maybeRef=null)
+    public static function index()
     {
         $parameters = array();
-        if (isset($maybeRef)) {
-            $parameters['ref'] = $maybeRef;
-        }
         $queryString = http_build_query($parameters);
 
         return Routes::baseUrl() . '/index.php?' . $queryString;
     }
 
-    public static function detail($id, $slug, $maybeRef=null)
+    public static function detail($id, $slug)
     {
         $parameters = array(
             "id" => $id,
@@ -55,12 +44,9 @@ class Routes
         return Routes::baseUrl() . '/detail.php?' . $queryString;
     }
 
-    public static function search($maybeRef=null)
+    public static function search()
     {
         $parameters = array();
-        if (isset($maybeRef)) {
-            $parameters['ref'] = $maybeRef;
-        }
         $queryString = http_build_query($parameters);
 
         return Routes::baseUrl() . '/search.php?' . $queryString;
@@ -93,7 +79,23 @@ class Routes
 
 class LinkResolver extends \Prismic\LinkResolver {
     public function resolve($link) {
-        return Routes::detail($link->getId(), $link->getSlug(), PrismicHelper::context()->getRef());
+        return Routes::detail($link->getId(), $link->getSlug());
     }
 };
 $linkResolver = new LinkResolver();
+
+function handlePrismicException($e)
+{
+    $response = $e->getResponse();
+    if ($response->getStatusCode() == 403) {
+        exit('Forbidden');
+    } elseif ($response->getStatusCode() == 404) {
+        header("HTTP/1.0 404 Not Found");
+        exit("Not Found");
+    } else {
+        setcookie(Prismic\PREVIEW_COOKIE, "", time() - 1);
+        header('Location: ' . '/');
+    }
+}
+
+

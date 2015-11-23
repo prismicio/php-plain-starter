@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "b2524a2018ae721d524271f7fe2913af",
+    "hash": "550f1e1eb315fc8159def5c63d4274b6",
     "packages": [
         {
             "name": "egeloen/http-adapter",
@@ -86,16 +86,16 @@
         },
         {
             "name": "prismic/php-sdk",
-            "version": "1.6.1",
+            "version": "1.7.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/prismicio/php-kit.git",
-                "reference": "db756e74c61cdba151b50780f973fb08e27d094b"
+                "reference": "683c0dc67f2b6d41165074e8a5e2bec16dbf9704"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/prismicio/php-kit/zipball/db756e74c61cdba151b50780f973fb08e27d094b",
-                "reference": "db756e74c61cdba151b50780f973fb08e27d094b",
+                "url": "https://api.github.com/repos/prismicio/php-kit/zipball/683c0dc67f2b6d41165074e8a5e2bec16dbf9704",
+                "reference": "683c0dc67f2b6d41165074e8a5e2bec16dbf9704",
                 "shasum": ""
             },
             "require": {
@@ -127,7 +127,7 @@
                 "Apache 2 license"
             ],
             "description": "PHP development kit for prismic.io",
-            "time": "2015-11-20 10:06:18"
+            "time": "2015-11-23 12:43:17"
         },
         {
             "name": "psr/http-message",
@@ -180,16 +180,16 @@
         },
         {
             "name": "symfony/event-dispatcher",
-            "version": "v2.7.6",
+            "version": "v2.7.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/event-dispatcher.git",
-                "reference": "87a5db5ea887763fa3a31a5471b512ff1596d9b8"
+                "reference": "7e2f9c31645680026c2372edf66f863fc7757af5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/event-dispatcher/zipball/87a5db5ea887763fa3a31a5471b512ff1596d9b8",
-                "reference": "87a5db5ea887763fa3a31a5471b512ff1596d9b8",
+                "url": "https://api.github.com/repos/symfony/event-dispatcher/zipball/7e2f9c31645680026c2372edf66f863fc7757af5",
+                "reference": "7e2f9c31645680026c2372edf66f863fc7757af5",
                 "shasum": ""
             },
             "require": {
@@ -215,7 +215,10 @@
             "autoload": {
                 "psr-4": {
                     "Symfony\\Component\\EventDispatcher\\": ""
-                }
+                },
+                "exclude-from-classmap": [
+                    "/Tests/"
+                ]
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
@@ -233,7 +236,7 @@
             ],
             "description": "Symfony EventDispatcher Component",
             "homepage": "https://symfony.com",
-            "time": "2015-10-11 09:39:48"
+            "time": "2015-10-30 20:10:21"
         },
         {
             "name": "zendframework/zend-diactoros",
